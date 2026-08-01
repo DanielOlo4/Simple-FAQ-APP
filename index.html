@@ -500,16 +500,21 @@
                 -2px 0 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             transition: background 0.3s ease, box-shadow 0.3s ease;
+            /* NEW: make it a flex column so nav stays at bottom */
+            display: flex;
+            flex-direction: column;
         }
 
         /* pages container */
         .pages-container {
             position: relative;
             width: 100%;
-            height: 100%;
+            flex: 1; /* takes remaining space */
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
             border-radius: 0 12px 12px 0;
+            /* allow scroll on mobile if needed (but we'll keep it hidden) */
+            overflow: hidden;
         }
 
         /* each page */
@@ -871,6 +876,7 @@
             position: relative;
             z-index: 20;
             transition: background 0.3s ease;
+            flex-shrink: 0; /* ensure it doesn't shrink */
         }
 
         .book-nav .nav-left {
@@ -1438,7 +1444,9 @@
             background: var(--text-muted);
         }
 
-        /* ===== RESPONSIVE ===== */
+        /* ================================================================
+           RESPONSIVE
+           ================================================================ */
         @media (max-width: 1024px) {
             .book-container {
                 max-width: 700px;
@@ -1504,16 +1512,28 @@
                 display: block;
             }
 
-            /* FIX MOBILE BOOK DISPLAY */
+            /* ===== FIX MOBILE BOOK DISPLAY ===== */
             .book-container {
                 max-width: 100%;
                 width: 100%;
                 aspect-ratio: 4 / 3;
                 min-height: unset;
                 height: auto;
+                max-height: 70vh; /* prevent overflow */
             }
             .book-wrapper {
                 perspective: 1200px;
+            }
+            .book-inner {
+                display: flex;
+                flex-direction: column;
+                overflow: hidden; /* keep pages clipped */
+                height: 100%;
+            }
+            .pages-container {
+                flex: 1;
+                height: auto;
+                overflow: hidden; /* we want pages to fit, not scroll */
             }
             .page {
                 padding: 18px 20px;
@@ -1559,21 +1579,46 @@
                 padding: 24px 20px;
             }
 
+            /* ===== BOOK NAVIGATION — make arrows visible and tappable ===== */
             .book-nav {
                 padding: 10px 16px;
                 flex-direction: column;
                 align-items: stretch;
                 gap: 8px;
+                flex-shrink: 0;
+                border-radius: 0 0 12px 12px;
+                background: var(--page-bg);
+                position: sticky;
+                bottom: 0;
+                z-index: 30;
             }
             .book-nav .nav-left {
                 justify-content: space-between;
                 flex-wrap: wrap;
+                gap: 8px;
             }
             .book-nav .nav-buttons {
                 justify-content: center;
+                gap: 14px;
+            }
+            .book-nav .nav-buttons button {
+                width: 48px;
+                height: 48px;
+                font-size: 1.2rem;
+                border-width: 2px;
             }
             .book-nav .jump-control {
                 justify-content: center;
+                width: 100%;
+            }
+            .book-nav .jump-control select {
+                width: 100%;
+                max-width: 200px;
+                padding: 8px 12px;
+            }
+            .book-nav .page-indicator {
+                font-size: 0.8rem;
+                padding: 4px 14px;
             }
 
             .result-card {
@@ -1622,6 +1667,7 @@
 
             .book-container {
                 aspect-ratio: 4 / 3;
+                max-height: 60vh;
             }
             .page {
                 padding: 14px 16px;
@@ -1669,9 +1715,9 @@
                 padding: 2px 12px;
             }
             .book-nav .nav-buttons button {
-                width: 36px;
-                height: 36px;
-                font-size: 0.85rem;
+                width: 44px;
+                height: 44px;
+                font-size: 1.1rem;
             }
             .book-nav .jump-control select {
                 font-size: 0.7rem;
@@ -1840,7 +1886,7 @@
         }
 
         /* ================================================================
-           FOOTER (added for completeness - matches earlier version)
+           FOOTER
            ================================================================ */
         .footer {
             background: var(--footer-bg);
@@ -2157,11 +2203,11 @@
         <!-- Contributor 3 -->
         <div class="contributor-item">
            <img src="./images/1000954947.jpg.jpeg"
-                 alt="Lijinrin Abiola"
+                 alt="Lijirin Abiola"
                  class="contributor-img"
                  loading="lazy">
 
-            <div class="contributor-name">Lijinrin Abiola</div>
+            <div class="contributor-name">Lijirin Abiola</div>
             <div class="contributor-role">UI/UX Designer</div>
             <div class="contributor-bio">
                 Designing beautiful interfaces that enhance the joy of learning.
@@ -2198,7 +2244,7 @@
 
         <!-- Contributor 6 -->
         <div class="contributor-item">
-            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop&crop=face"
+            <img src="./images/IMG_8718.jpg.jpeg"
                  alt="Ayedi Destiny"
                  class="contributor-img"
                  loading="lazy">
